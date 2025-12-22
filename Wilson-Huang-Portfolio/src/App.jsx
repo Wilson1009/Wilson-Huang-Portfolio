@@ -57,17 +57,22 @@ function App() {
         {/* Projects */}
             <section ref={projects} className="h-screen">
             <header className="text-white text-[clamp(3.5rem,6vw,5rem)] font-patrick-hand text-center">Projects</header>
-            <div className="font-patrick-hand mt-25 ml-10 text-whitem flex">
+            
+            
+            <div className="font-patrick-hand mt-25 ml-10 text-white flex">
 
-                <div 
-                onClick={projectLink}
-                className="p-9 pl-0 w-[clamp(50vw,65vw,65vw)] h-[clamp(27vw,35vw,40vw)] bg-[#E0E1DD] cursor-pointer
-                            flex transition-transform duration-200 ease-in-out 
-                            hover:scale-[1.1] hover:z-10">
-                    <img 
-                        src="src/assets/Tenzies.png" 
-                        alt="Tenzies game image" />
-                </div>
+            <div 
+              onClick={projectLink}
+              className="w-[clamp(300px,65vw,900px)] h-[clamp(100px,35vw,700px)] aspect-video bg-[#E0E1DD] cursor-pointer
+                        flex transition-transform duration-200 ease-in-out 
+                        hover:scale-[1.05] hover:z-10 overflow-hidden relative group items-center">
+                
+                <img 
+                    className="w-[93%] h-[93%] object-contain"
+                    src="src/assets/Tenzies.png" 
+                    alt="Tenzies game image"
+                />
+            </div>
 
                 <div className="flex flex-col px-20">
                     <h2 className="text-[clamp(2rem,5vw,3.5rem)] text-white">Tenzies Game</h2>
