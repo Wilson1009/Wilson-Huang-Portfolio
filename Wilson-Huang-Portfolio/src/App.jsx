@@ -1,3 +1,4 @@
+import tenziesImg from './assets/Tenzies.png';
 import './index.css'
 import React, { useRef } from 'react';
 
@@ -68,9 +69,9 @@ function App() {
                         hover:scale-[1.05] hover:z-10 overflow-hidden relative group items-center">
                 
                 <img 
-                    className="w-[93%] h-[93%] object-contain"
-                    src="src/assets/Tenzies.png" 
-                    alt="Tenzies game image"
+                  className="w-[93%] h-[93%] object-contain"
+                  src={tenziesImg} 
+                  alt="Tenzies game image"
                 />
             </div>
 
