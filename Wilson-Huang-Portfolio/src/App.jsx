@@ -1,103 +1,224 @@
-import tenziesImg from './assets/Tenzies.png';
-import './index.css'
-import React, { useRef } from 'react';
+import React, { useState, useRef } from "react";
+import tenziesImg from "./assets/Tenzies.png";
+import mapsHomePage from "./assets/maps/HomePage.png"; 
+import mapsProfessorSearch from "./assets/maps/ProfessorSearch.png"; 
+import mapsProfessorPage from "./assets/maps/ProfessorPage.png"; 
+import mapsRoadMapEmpty from "./assets/maps/RoadMapEmpty.png"; 
+import mapsRoadMapFill from "./assets/maps/RoadMapFill.png"; 
+import mapsCoursePickerFilled from "./assets/maps/CoursePickerFilled.png"; 
+import mapsScheduleBuilder from "./assets/maps/ScheduleBuilder.png"; 
+import blueProfile from "./assets/BlueProfile.png"
+import "./index.css";
 
-// Define the height of your sticky navbar in pixels
+/**
+ * A reusable Carousel component for project images
+ */
+const ProjectCarousel = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  const goToPrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  return (
+    <div className="relative w-full h-full overflow-hidden group">
+      {/* Image Slider */}
+      <div 
+        className="flex h-full transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {images.map((img, index) => (
+          <div key={index} className="w-full h-full flex-shrink-0">
+            <img 
+              src={img} 
+              alt={`Slide ${index}`} 
+              className="w-full h-full object-cover" 
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Indicators */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2.5 h-1 transition-all ${
+              currentIndex === index ? "bg-[#1B263B]" : "bg-[#E0E1DD]"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Navigation Buttons */}
+      <button 
+        onClick={goToPrev} 
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+      >
+        &#10094;
+      </button>
+      <button 
+        onClick={goToNext} 
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+      >
+        &#10095;
+      </button>
+    </div>
+  );
+};
 
 function App() {
+  const NAVBAR_HEIGHT = 60;
+  const introRef = useRef(null);
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
 
-    const NAVBAR_HEIGHT = 60;
-    const introRef = useRef(null);
-    const aboutRef = useRef(null);
-    const projects = useRef(null);
-
-    // Define the central function to handle the scroll action
-    const scrollToSection = (ref) => {
-      // Check if the ref is attached to an element before scrolling
-      if (ref.current) {
-        const topPosition = ref.current.getBoundingClientRect().top;
-        const currentScrollPosition = window.pageYOffset;
-
-        window.scrollTo({
-          top: topPosition + currentScrollPosition - NAVBAR_HEIGHT,
-          behavior: 'smooth',
-        });
-      }
-    };
-
-    // ----Fix this because it openes github instead of the website, make button for the github link-""
-    const projectLink = () =>{
-        window.open("https://github.com/Wilson1009/Tenzies-Game","_blank")
+  // Smooth scroll handler
+  const scrollToSection = (ref) => {
+    if (ref.current) {
+      const topPosition = ref.current.getBoundingClientRect().top;
+      const currentScrollPosition = window.pageYOffset;
+      window.scrollTo({
+        top: topPosition + currentScrollPosition - NAVBAR_HEIGHT,
+        behavior: "smooth",
+      });
     }
+  };
 
-    return(
-        <>
-        {/* NavBar - Ensure this is where you measure the height from! */}
-            <nav className="bg-[#778DA9] w-100vh h-full sticky top-0 z-50 cursor-pointer font-patrick-hand text-white pr-5 flex flex-row-reverse">
-                <button onClick={() => scrollToSection(projects)} className="text-[clamp(1rem,6vw,3rem)] cursor-pointer px-5 duration-200 hover:bg-[#1B263B]">Projects </button>
-                <button onClick={() => scrollToSection(aboutRef)} className="text-[clamp(1rem,6vw,3rem)] cursor-pointer px-5 duration-200 hover:bg-[#1B263B]">About Me </button>
-                <button onClick={() => scrollToSection(introRef)} className="text-[clamp(1rem,6vw,3rem)] cursor-pointer px-5 duration-200 hover:bg-[#1B263B]">Home </button>
-            </nav>
-        {/* Intro Page */}
-            <section ref = {introRef} className="h-screen" >
-                <header className="font-patrick-hand text-white flex-col text-[clamp(3rem,6vw,5rem)] justify-items-center my-[25vh] ">
-                    <h1 className="h-100vh w-100v ">Hello, my name is Wilson,</h1> 
-                    <h1 className="h-100vh w-100vh ">I'm a full stack developer.</h1> 
-                    <div className="flex mt-10">
-                        <button onClick={() => scrollToSection(aboutRef)}className="justify-center text-[35px] w-[200px] h-[75px] rounded-sm bg-[#E0E1DD] text-[#0D1B2A] cursor-pointer duration-200 hover:text-[40px]">More &darr;</button>
-                    </div>
-                </header>
-            </section>
+  const openLink = (url) => {
+    window.open(url, "_blank");
+  };
 
-        {/* About Me */}
-        <section ref={aboutRef} className="h-screen z-0 text-white">
-            {/* ADD mt-0 to the first child element */}
-            <h1>Temp Placement Thing</h1>
-        </section>
+  // Image arrays for carousels
+  const mapsImages = [
+    mapsHomePage,
+    mapsProfessorSearch,
+    mapsProfessorPage,
+    mapsRoadMapEmpty,
+    mapsRoadMapFill,
+    mapsCoursePickerFilled,
+    mapsScheduleBuilder
+  ];
 
-        {/* Projects */}
-            <section ref={projects} className="h-screen">
-            <header className="text-white text-[clamp(3.5rem,6vw,5rem)] font-patrick-hand text-center">Projects</header>
-            
-            
-            <div className="font-patrick-hand mt-25 ml-10 text-white flex">
+  const tenziesImages = [
+    tenziesImg,
+  ];
 
-            <div 
-              onClick={projectLink}
-              className="w-[clamp(300px,65vw,900px)] h-[clamp(100px,35vw,700px)] aspect-video bg-[#E0E1DD] cursor-pointer
-                        flex transition-transform duration-200 ease-in-out 
-                        hover:scale-[1.05] hover:z-10 overflow-hidden relative group items-center">
-                
-                <img 
-                  className="w-[93%] h-[93%] object-contain"
-                  src={tenziesImg} 
-                  alt="Tenzies game image"
-                />
+  return (
+    <div className="bg-[#0D1B2A] min-h-screen">
+      {/* Navigation */}
+      <nav className="bg-[#778DA9] w-full h-[60px] sticky top-0 z-50 font-patrick-hand text-white flex flex-row-reverse items-center pr-10">
+        <button onClick={() => scrollToSection(projectsRef)} className="text-[clamp(1.2rem,3vw,2rem)] px-5 hover:bg-[#1B263B] h-full transition-colors">Projects</button>
+        <button onClick={() => scrollToSection(aboutRef)} className="text-[clamp(1.2rem,3vw,2rem)] px-5 hover:bg-[#1B263B] h-full transition-colors">About Me</button>
+        <button onClick={() => scrollToSection(introRef)} className="text-[clamp(1.2rem,3vw,2rem)] px-5 hover:bg-[#1B263B] h-full transition-colors">Home</button>
+      </nav>
+
+      {/* Hero Section */}
+      <section ref={introRef} className="h-screen flex flex-col justify-center items-center text-center font-patrick-hand text-white">
+        <h1 className="text-[clamp(2.5rem,8vw,5rem)] leading-tight">Hello, my name is Wilson,</h1>
+        <h1 className="text-[clamp(2.5rem,8vw,5rem)] leading-tight">I'm a full stack developer.</h1>
+        <button
+          onClick={() => scrollToSection(aboutRef)}
+          className="mt-10 text-[2rem] px-10 py-4 rounded-sm bg-[#E0E1DD] text-[#0D1B2A] hover:scale-110 transition-transform duration-200"
+        >
+          More &darr;
+        </button>
+      </section>
+
+      {/* About Section */}
+      <section ref={aboutRef} className="h-screen flex items-center justify-center text-white border-t border-white/10">
+        <img src={blueProfile} alt="blueProfile" />
+        <h1 className="text-4xl font-patrick-hand mx-10">My name is Wilson Huang. As a first-generation CS student at Queens College, I focus on the intersection of robust code and UI/UX. I believe a well-designed interface is the ultimate bridge between human and machine. I’m driven by the challenge of transforming complex problems into simple, beautiful, and navigable solutions. </h1>
+      </section>
+
+      {/* Projects Section */}
+      <section ref={projectsRef} className="min-h-screen py-20 px-5 lg:px-20">
+        <header className="text-white text-[clamp(3.5rem,6vw,5rem)] font-patrick-hand text-center mb-20">
+          Projects
+        </header>
+
+        <div className="flex flex-col gap-32">
+          
+          {/* Project 1: M.A.P.S */}
+          <div className="flex flex-col lg:flex-row gap-10 items-start font-patrick-hand">
+            {/* The Image Container - flex-shrink-0 prevents resizing */}
+            <div className="flex-shrink-0 w-full lg:w-[600px] aspect-video bg-[#E0E1DD] rounded-3xl overflow-hidden shadow-2xl">
+              <ProjectCarousel images={mapsImages} />
             </div>
 
-                <div className="flex flex-col px-20">
-                    <h2 className="text-[clamp(2rem,5vw,3.5rem)] text-white">Tenzies Game</h2>
-                    <p className="mt-5 text-[clamp(1rem,3vw,2rem)] text-white">Simple front-end game of Tenzies built with React.</p>
-                    
-                    <button onClick={projectLink} class="mt-15 bg-[#E0E1DD] text-[#0D1B2A] cursor-pointer w-full h-[clamp(20px,55px,75px)] text-3xl group relative overflow-hidden transition-colors duration-200 hover:text-white">
-                        <span class=" absolute inset-0 bg-[#778DA9] transform scale-y-0 group-hover:scale-y-100 transition-transform duration-250 ease-out origin-bottom z-0"></span>
-                        <span class="relative z-10 duration-500">Live Demo</span>
-                    </button>
-                    
-                    <button onClick={projectLink} class="mt-15 bg-[#E0E1DD] text-[#0D1B2A] cursor-pointer w-full h-[clamp(20px,55px,75px)] text-3xl group relative overflow-hidden transition-colors duration-200 hover:text-white">
-                        <span class=" absolute inset-0 bg-[#778DA9] transform scale-y-0 group-hover:scale-y-100 transition-transform duration-250 ease-out origin-bottom z-0"></span>
-                        <span class="relative z-10 duration-500">Learn More</span>
-                    </button>
-
-                </div>
-
+            {/* The Text Container */}
+            <div className="flex flex-col flex-1 text-white">
+              <h2 className="text-[clamp(2.5rem,5vw,3.5rem)] leading-none mb-4">
+                M.A.P.S – Academic Planning
+              </h2>
+              <p className="text-[clamp(1.1rem,2vw,1.4rem)] opacity-90 mb-8 leading-relaxed">
+                Full-stack web application designed for Computer Science undergraduates at Queens College. 
+                Centralizes course data, professor reviews, and tracking into an intuitive platform.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* <button 
+                  onClick={() => openLink("https://maps-demo.com")}
+                  className="relative group bg-[#E0E1DD] text-[#0D1B2A] py-3 px-8 text-xl overflow-hidden transition-colors"
+                >
+                  <span className="absolute inset-0 bg-[#778DA9] transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom duration-300"></span>
+                  <span className="relative z-10 group-hover:text-white">Live Demo</span>
+                </button> */}
+                <button 
+                  onClick={() => openLink("https://github.com/Wilson1009/MAPS")}
+                  className="relative group bg-[#E0E1DD] text-[#0D1B2A] py-3 px-8 text-xl overflow-hidden transition-colors"
+                >
+                  <span className="absolute inset-0 bg-[#778DA9] transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom duration-300"></span>
+                  <span className="relative z-10 group-hover:text-white">GitHub Repo</span>
+                </button>
+              </div>
             </div>
-            <div className="mt-250">
-                t
+          </div>
+
+          {/* Project 2: Tenzies */}
+          <div className="flex flex-col lg:flex-row gap-10 items-start font-patrick-hand">
+            <div className="flex-shrink-0 w-full lg:w-[600px] aspect-video bg-[#E0E1DD] rounded-xl overflow-hidden shadow-2xl flex items-center justify-center group">
+              <img 
+                src={tenziesImg} 
+                className="w-[90%] h-[90%] object-contain group-hover:scale-110 transition-transform duration-500 rounded-2xl" 
+                alt="Tenzies" 
+              />
             </div>
-        </section> 
-        </>
-    )
+
+            <div className="flex flex-col flex-1 text-white">
+              <h2 className="text-[clamp(2.5rem,5vw,3.5rem)] leading-none mb-4">
+                Tenzies Game
+              </h2>
+              <p className="text-[clamp(1.1rem,2vw,1.4rem)] opacity-90 mb-8 leading-relaxed">
+                A fast-paced dice rolling game built with React. Features high-score tracking, 
+                confetti celebrations, and optimized state management.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* <button onClick={() => openLink("#")} className="relative group bg-[#E0E1DD] text-[#0D1B2A] py-3 px-8 text-xl overflow-hidden">
+                  <span className="absolute inset-0 bg-[#778DA9] transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom duration-300"></span>
+                  <span className="relative z-10 group-hover:text-white">Live Demo</span>
+                </button> */}
+                <button onClick={() => openLink("https://github.com/Wilson1009/Tenzies-Game")} className="relative group bg-[#E0E1DD] text-[#0D1B2A] py-3 px-8 text-xl overflow-hidden">
+                  <span className="absolute inset-0 bg-[#778DA9] transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom duration-300"></span>
+                  <span className="relative z-10 group-hover:text-white">GitHub</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+      
+      {/* Footer Spacer */}
+      <div className="h-40" />
+    </div>
+  );
 }
 
-export default App
+export default App;
