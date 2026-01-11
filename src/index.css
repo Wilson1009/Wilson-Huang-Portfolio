@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-patrick: "Patrick Hand", cursive;
+}
+
+/* Use the Tailwind variable for the body background for better consistency */
+body {
+  background-color: #0D1B2A;
+  font-family: var(--font-patrick);
+}
