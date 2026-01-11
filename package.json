@@ -1,14 +1,10 @@
 {
-  "name": "Wilson-Huang-Portfolio",
-  "homepage": "https://wilson1009.github.io/Wilson-Huang-Portfolio/",
+  "name": "wilson-huang-portfolio",
+  "homepage": "https://wilson1009.github.io/wilson-huang-portfolio/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
